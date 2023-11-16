@@ -21,7 +21,7 @@ namespace ASC_HPC
     SIMD (__m256i _mask) : mask(_mask) { };
     SIMD (__m256d _mask) : mask(_mm256_castpd_si256(_mask)) { ; }
     auto Val() const { return mask; }
-    mask64 operator[](size_t i) const { return ( (int64_t*)&mask)[0] != 0; }
+    mask64 operator[](size_t i) const { return ( (int64_t*)&mask)[i] != 0; }
 
     SIMD<mask64, 2> Lo() const { return SIMD<mask64,2>((*this)[0], (*this)[1]); }
     SIMD<mask64, 2> Hi() const { return SIMD<mask64,2>((*this)[2], (*this)[3]); }
@@ -100,7 +100,7 @@ namespace ASC_HPC
   
   inline auto operator+ (SIMD<double,4> a, SIMD<double,4> b) { return SIMD<double,4> (_mm256_add_pd(a.Val(), b.Val())); }
   inline auto operator- (SIMD<double,4> a, SIMD<double,4> b) { return SIMD<double,4> (_mm256_sub_pd(a.Val(), b.Val())); }
-  
+  inline auto operator/ (SIMD<double,4> a, SIMD<double,4> b) { return SIMD<double,4> (_mm256_div_pd(a.Val(), b.Val())); }
   inline auto operator* (SIMD<double,4> a, SIMD<double,4> b) { return SIMD<double,4> (_mm256_mul_pd(a.Val(), b.Val())); }
   inline auto operator* (double a, SIMD<double,4> b) { return SIMD<double,4>(a)*b; }
   
@@ -115,6 +115,13 @@ namespace ASC_HPC
   
   inline auto operator>= (SIMD<double,4> a, SIMD<double,4> b)
   { return SIMD<mask64,4>(_mm256_cmp_pd (a.Val(), b.Val(), _CMP_GE_OQ)); }
+
+   inline SIMD<mask64,4> operator> (SIMD<int64_t,4> a , SIMD<int64_t,4> b)
+  { 
+    return  _mm256_cmpgt_epi64(a.Val(),b.Val()); }
+  
+  inline auto operator> (SIMD<double,4> a, SIMD<double,4> b)
+  { return SIMD<mask64,4>(_mm256_cmp_pd (a.Val(), b.Val(), _CMP_GT_OQ)); }
   
 
   
