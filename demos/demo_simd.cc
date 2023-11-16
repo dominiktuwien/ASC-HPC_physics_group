@@ -3,6 +3,7 @@
 
 
 #include <simd.h>
+#include <simd_avx.h>
 
 using namespace ASC_HPC;
 using std::cout, std::endl;
@@ -73,6 +74,9 @@ int main()
   cout << "2 >= " << sequ << " = " << mask << endl;
   cout << "2 > " << sequ << " = " << mask2 << endl;
 
+  auto mask2 = (2 > sequ);
+  cout << "2 > " << sequ << " = " << mask2 << endl;
+
   {
     double a[] = { 10, 10, 10, 10 };
     SIMD<double,4> sa(&a[0], mask);
@@ -80,5 +84,16 @@ int main()
   }
 
   cout << "Select(mask, a, b) = " << Select(mask, a,b) << endl;
-  
+
+  double mem[4] = { 10, 11, 12, 13 };
+  SIMD<double,4> c(&mem[0]);
+  cout << "a = " << a << endl;
+  cout << "a*b+c = " << a*b+c << endl;
+  cout << "a*b-c = " << a*b-c << endl;
+  cout << "a*b/c = " << a*b/c << endl;
+  //auto d = a*b+c;
+  //cout << d << endl;
+  //double res[4];
+  //d.Store(&res[0]);
+  //TO DO: bei simd_avx.h operator> definieren!!
 }

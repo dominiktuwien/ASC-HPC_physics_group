@@ -9,7 +9,6 @@
   https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html
  */
 
-
 namespace ASC_HPC
 {
 
@@ -100,7 +99,7 @@ namespace ASC_HPC
   
   inline auto operator+ (SIMD<double,4> a, SIMD<double,4> b) { return SIMD<double,4> (_mm256_add_pd(a.Val(), b.Val())); }
   inline auto operator- (SIMD<double,4> a, SIMD<double,4> b) { return SIMD<double,4> (_mm256_sub_pd(a.Val(), b.Val())); }
-  
+  inline auto operator/ (SIMD<double,4> a, SIMD<double,4> b) { return SIMD<double,4> (_mm256_div_pd(a.Val(), b.Val())); }
   inline auto operator* (SIMD<double,4> a, SIMD<double,4> b) { return SIMD<double,4> (_mm256_mul_pd(a.Val(), b.Val())); }
   inline auto operator* (double a, SIMD<double,4> b) { return SIMD<double,4>(a)*b; }
   
@@ -118,6 +117,13 @@ namespace ASC_HPC
   
   inline auto operator>= (SIMD<double,4> a, SIMD<double,4> b)
   { return SIMD<mask64,4>(_mm256_cmp_pd (a.Val(), b.Val(), _CMP_GE_OQ)); }
+
+   inline SIMD<mask64,4> operator> (SIMD<int64_t,4> a , SIMD<int64_t,4> b)
+  { 
+    return  _mm256_cmpgt_epi64(a.Val(),b.Val()); }
+  
+  inline auto operator> (SIMD<double,4> a, SIMD<double,4> b)
+  { return SIMD<mask64,4>(_mm256_cmp_pd (a.Val(), b.Val(), _CMP_GT_OQ)); }
   
   inline SIMD<mask64,4> operator > (SIMD<int64_t,4> a, SIMD<int64_t,4> b)
   {
