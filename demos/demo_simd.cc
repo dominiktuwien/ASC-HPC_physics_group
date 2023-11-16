@@ -57,11 +57,21 @@ int main()
   cout << "HSum(a) = " << HSum(a) << endl;
   cout << "HSum(a,b) = " << HSum(a,b) << endl;
 
-  
+  double mem[4] = { 10, 11, 12, 13 };
+  SIMD<double,4> c(&mem[0]);
+  auto d = a*b+c;
+  auto e = a*b-c;
+  auto f = a/c;
+  std::cout << "a*b +c = " << d << std::endl;
+  std::cout << "a*b -c = " << e << std::endl;
+  std::cout << "a/b = " << f << std::endl;
+
   auto sequ = IndexSequence<int64_t, 4>();
   cout << "sequ = " << sequ << endl;
   auto mask = (2 >= sequ);
+  auto mask2 = (2 > sequ);
   cout << "2 >= " << sequ << " = " << mask << endl;
+  cout << "2 > " << sequ << " = " << mask2 << endl;
 
   {
     double a[] = { 10, 10, 10, 10 };
