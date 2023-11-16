@@ -3,6 +3,7 @@
 
 
 #include <simd.h>
+#include<simd_avx.h>
 
 using namespace ASC_HPC;
 using std::cout, std::endl;
