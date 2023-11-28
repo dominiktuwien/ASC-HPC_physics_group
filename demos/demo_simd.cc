@@ -54,7 +54,7 @@ int main()
   cout << "a = " << a << endl;
   cout << "b = " << b << endl;
   cout << "a+b = " << a+b << endl;
-
+/*
   cout << "HSum(a) = " << HSum(a) << endl;
   cout << "HSum(a,b) = " << HSum(a,b) << endl;
 
@@ -74,9 +74,6 @@ int main()
   cout << "2 >= " << sequ << " = " << mask << endl;
   cout << "2 > " << sequ << " = " << mask2 << endl;
 
-  auto mask2 = (2 > sequ);
-  cout << "2 > " << sequ << " = " << mask2 << endl;
-
   {
     double a[] = { 10, 10, 10, 10 };
     SIMD<double,4> sa(&a[0], mask);
@@ -85,15 +82,20 @@ int main()
 
   cout << "Select(mask, a, b) = " << Select(mask, a,b) << endl;
 
-  double mem[4] = { 10, 11, 12, 13 };
-  SIMD<double,4> c(&mem[0]);
-  cout << "a = " << a << endl;
-  cout << "a*b+c = " << a*b+c << endl;
-  cout << "a*b-c = " << a*b-c << endl;
+// TODO: missing arithmetic functions?
   cout << "a*b/c = " << a*b/c << endl;
-  //auto d = a*b+c;
-  //cout << d << endl;
-  //double res[4];
-  //d.Store(&res[0]);
+  double res[4];
+  d.Store(&res[0]);
+  cout << d << endl;*/
   //TO DO: bei simd_avx.h operator> definieren!!
+
+// SIMD<T,2> Klasse
+  SIMD<double,2> e(2.,5.);
+  SIMD<double,2> f(1.0);
+  
+  cout << "e = " << e << endl;
+  cout << "f = " << f << endl;
+  cout << "e+f = " << e+f << endl;
+  cout << "f/e = " << f/e << endl;
+  cout << "3/e = " << 3.0/e << endl;
 }
