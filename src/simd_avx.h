@@ -164,6 +164,14 @@ namespace ASC_HPC
 
 
   template <int64_t first>
+  class IndexSequence<int64_t, 2, first> : public SIMD<int64_t,2>
+  {
+  public:
+    IndexSequence()
+      : SIMD<int64_t,2> (first, first+1) { }
+  };
+
+  template <int64_t first>
   class IndexSequence<int64_t, 4, first> : public SIMD<int64_t,4>
   {
   public:
@@ -189,11 +197,28 @@ namespace ASC_HPC
   inline auto operator/ (double a, SIMD<double,4> b) { return SIMD<double,4>(a)/b; }
 
 
-
+// do we need 2-vector version of this?
 #ifdef __FMA__
   inline SIMD<double,4> FMA (SIMD<double,4> a, SIMD<double,4> b, SIMD<double,4> c)
   { return _mm256_fmadd_pd (a.Val(), b.Val(), c.Val()); }
 #endif
+
+
+  inline SIMD<mask64,2> operator>= (SIMD<int64_t,2> a , SIMD<int64_t,2> b)
+  { // there is no a>=b, so we return !(b>a)
+    return  _mm_xor_si128(_mm_cmpgt_epi64(b.Val(),a.Val()),_mm_set1_epi32(-1)); }
+  
+  inline auto operator>= (SIMD<double,2> a, SIMD<double,2> b)
+  { return SIMD<mask64,2>(_mm_cmp_pd (a.Val(), b.Val(), _CMP_GE_OQ)); }
+
+   inline SIMD<mask64,2> operator> (SIMD<int64_t,2> a , SIMD<int64_t,2> b)
+  { 
+    return  _mm_cmpgt_epi64(a.Val(),b.Val()); }
+  
+  inline auto operator> (SIMD<double,2> a, SIMD<double,2> b)
+  { return SIMD<mask64,2>(_mm_cmp_pd (a.Val(), b.Val(), _CMP_GT_OQ)); }
+
+
 
   inline SIMD<mask64,4> operator>= (SIMD<int64_t,4> a , SIMD<int64_t,4> b)
   { // there is no a>=b, so we return !(b>a)

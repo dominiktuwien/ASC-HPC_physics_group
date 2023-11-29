@@ -98,4 +98,11 @@ int main()
   cout << "e+f = " << e+f << endl;
   cout << "f/e = " << f/e << endl;
   cout << "3/e = " << 3.0/e << endl;
+
+  auto sequ_new = IndexSequence<int64_t, 2>();
+  cout << "sequ = " << sequ_new << endl;
+  auto mask_new = (1 >= sequ_new);
+  auto mask2_new = (1 > sequ_new);
+  cout << "2 >= " << sequ_new << " = " << mask_new << endl;
+  cout << "2 > " << sequ_new << " = " << mask2_new << endl;
 }
