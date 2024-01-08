@@ -105,10 +105,6 @@ namespace ASC_HPC
     void Store (double * p) const { _mm256_storeu_pd(p, val); }
     void Store (double * p, SIMD<mask64,4> mask) const { _mm256_maskstore_pd(p, mask.Val(), val); }
 
-    // TODO: Transpose
-    /* void Transpose (SIMD<double,4> a0, SIMD<double,4> a1, SIMD<double,4> a2, SIMD<double,4> a3,
-                SIMD<double,4> &b0, SIMD<double,4> &b1, SIMD<double,4> &b2, SIMD<double,4> &b3);*/
-    
   };
   
 
@@ -178,7 +174,6 @@ namespace ASC_HPC
     IndexSequence()
       : SIMD<int64_t,4> (first, first+1, first+2, first+3) { }
   };
-  // Should we do this for 2-Vector (_m128) too?
 
 
   inline auto operator+ (SIMD<double,2> a, SIMD<double,2> b) { return SIMD<double,2> (_mm_add_pd(a.Val(), b.Val())); }
@@ -233,6 +228,29 @@ namespace ASC_HPC
   
   inline auto operator> (SIMD<double,4> a, SIMD<double,4> b)
   { return SIMD<mask64,4>(_mm256_cmp_pd (a.Val(), b.Val(), _CMP_GT_OQ)); }
+
+
+  // Transpose
+    void Transpose (SIMD<double,4> a0, SIMD<double,4> a1, SIMD<double,4> a2, SIMD<double,4> a3, 
+                    SIMD<double,4> &b0, SIMD<double,4> &b1, SIMD<double,4> &b2, SIMD<double,4> &b3)
+    {
+      // unpack upper/lower parts of SIMD-vectors into pairs
+  	  __m256d a01_lo = _mm256_unpacklo_pd(a0.Val(), a1.Val());
+      __m256d a01_hi = _mm256_unpackhi_pd(a0.Val(), a1.Val());
+      __m256d a23_lo = _mm256_unpacklo_pd(a2.Val(), a3.Val());
+      __m256d a23_hi = _mm256_unpackhi_pd(a2.Val(), a3.Val());
+
+      // permutation and storing
+      b0 = _mm256_permute2f128_pd(a01_lo, a23_lo, 0x20);
+      b1 = _mm256_permute2f128_pd(a01_hi, a23_hi, 0x20);
+      b2 = _mm256_permute2f128_pd(a01_lo, a23_lo, 0x31);
+      b3 = _mm256_permute2f128_pd(a01_hi, a23_hi, 0x31);
+      
+    };
+    
+
+
+
   
   
 }

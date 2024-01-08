@@ -48,13 +48,13 @@ SIMD<double,2> TestHSum (SIMD<double,4> a, SIMD<double,4> b)
 
 int main()
 {
-  SIMD<double,4> a(1.,2.,3.,4.);
+  /*SIMD<double,4> a(1.,2.,3.,4.);
   SIMD<double,4> b(1.0);
   
   cout << "a = " << a << endl;
   cout << "b = " << b << endl;
   cout << "a+b = " << a+b << endl;
-/*
+
   cout << "HSum(a) = " << HSum(a) << endl;
   cout << "HSum(a,b) = " << HSum(a,b) << endl;
 
@@ -67,6 +67,10 @@ int main()
   std::cout << "a*b -c = " << e << std::endl;
   std::cout << "a/b = " << f << std::endl;
 
+  c = FMA(a,b,c); // a*b+c with intrinsic function -> doesn't work yet (i think)
+  cout << c << endl; // see pipelining for FMA...
+  */
+  /*
   auto sequ = IndexSequence<int64_t, 4>();
   cout << "sequ = " << sequ << endl;
   auto mask = (2 >= sequ);
@@ -86,11 +90,12 @@ int main()
   cout << "a*b/c = " << a*b/c << endl;
   double res[4];
   d.Store(&res[0]);
-  cout << d << endl;*/
+  cout << d << endl;
   //TO DO: bei simd_avx.h operator> definieren!!
+*/
 
 // SIMD<T,2> Klasse
-  SIMD<double,2> e(2.,5.);
+  /*SIMD<double,2> e(2.,5.);
   SIMD<double,2> f(1.0);
   
   cout << "e = " << e << endl;
@@ -103,6 +108,23 @@ int main()
   cout << "sequ = " << sequ_new << endl;
   auto mask_new = (1 >= sequ_new);
   auto mask2_new = (1 > sequ_new);
-  cout << "2 >= " << sequ_new << " = " << mask_new << endl;
-  cout << "2 > " << sequ_new << " = " << mask2_new << endl;
+  cout << "1 >= " << sequ_new << " = " << mask_new << endl;
+  cout << "1 > " << sequ_new << " = " << mask2_new << endl;*/
+
+// Transpose
+  SIMD<double,4> a(1.,2.,3.,4.);
+  SIMD<double,4> b(5.,6.,7.,8.);
+  SIMD<double,4> c(9.,10.,11.,12.);
+  SIMD<double,4> d(13.,14.,15.,16.);
+  SIMD<double,4> e,f,g,h;
+
+  Transpose(a,b,c,d,e,f,g,h);
+
+  cout << e << endl;
+  cout << f << endl;
+  cout << g << endl;
+  cout << h << endl;
+
+
+
 }
